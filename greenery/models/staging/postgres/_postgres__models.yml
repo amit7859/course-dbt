@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: stg_postgres__users 
+    description: "A staging table for users."
+    columns:
+      - name: user_id
+        tests:
+          - unique
+          - not_null
+      - name: email
+        tests:
+          - unique
+          - not_null
+  - name: stg_postgres__addresses
+    description: "A staging table for addresses."
+  - name: stg_postgres__events
+    description: "A staging table for events."
+  - name: stg_postgres__order_items
+    description: "A staging table for item orders."
+    columns:
+      - name: quantity
+        tests:
+          - positive_values
+  - name: stg_postgres__orders
+    description: "A staging table for orders."
+  - name: stg_postgres__products
+    description: "A staging table for products."
+    columns:
+      - name: inventory
+        tests:
+          - positive_values
+      - name: price
+        tests:
+          - positive_values
+  - name: stg_postgres__promos
+    description: "A staging table for promos."
+
