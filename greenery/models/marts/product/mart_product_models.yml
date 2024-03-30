@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: fact_page_views
+    description: "A fact table showing page views."
+    columns:
+      - name: event_id
+        tests:
+          - unique
+          - not_null
+      - name: session_id
+        tests:
+          - not_null
+      - name: user_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_postgres__users')
+              field: user_id
+      - name: page_url
+        tests:
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+      - name: product_id 
+        tests:
+          - relationships:
+              to: ref('stg_postgres__products')
+              field: product_id

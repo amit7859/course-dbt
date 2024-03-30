@@ -1,0 +1,94 @@
+version: 2
+
+models:
+  - name: dim_products
+    description: "A dim table for products."
+    columns:
+      - name: product_id
+        tests:
+          - unique
+          - not_null
+      - name: name
+        tests:
+          - not_null
+      - name: price
+        tests:
+          - not_null
+      - name: inventory
+        tests:
+          - not_null
+  - name: dim_users
+    description: "A dim table for users."
+    columns:
+      - name: user_id
+        tests:
+          - unique
+          - not_null
+      - name: first_name
+        tests:
+          - not_null
+      - name: last_name
+        tests:
+          - not_null
+      - name: email
+        tests:
+          - unique
+          - not_null
+      - name: phone_number
+        tests:
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+      - name: updated_at
+        tests:
+          - not_null
+      - name: address_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_postgres__addresses')
+              field: address_id
+  - name: fact_orders
+    description: "A staging table for orders."
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: promo_id
+        tests:
+          - relationships:
+              to: ref('stg_postgres__promos')
+              field: promo_id
+      - name: user_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_postgres__users')
+              field: user_id
+      - name: address_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_postgres__addresses')
+              field: address_id
+      - name: created_at
+        tests:
+          - not_null
+      - name: order_cost
+        tests:
+          - not_null
+      - name: shipping_cost
+      - name: order_total
+        tests:
+          - not_null
+      - name: tracking_id
+      - name: shipping_service
+      - name: estimated_delivery_at
+      - name: delivered_at
+      - name: status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['delivered', 'shipped', 'preparing', 'returned']
