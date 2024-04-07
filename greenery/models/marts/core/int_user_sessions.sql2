@@ -1,0 +1,20 @@
+{{
+  config(
+    materialized='table'
+  )
+}}
+
+
+
+select 
+    session_id, 
+    user_id, 
+    min(created_at) as session_start_at, 
+    max(created_at) as session_end_at, 
+    sum(case when event_type = 'page_view' then 1 else 0 end) as page_view_count,
+    sum(case when event_type = 'add_to_cart' then 1 else 0 end) as add_to_cart_count,
+    sum(case when event_type = 'checkout' then 1 else 0 end) as checkout_count,
+    sum(case when event_type = 'package_shipped' then 1 else 0 end) as package_shipped_count
+from {{ ref('stg_postgres__events') }} 
+group by 1, 2
+
